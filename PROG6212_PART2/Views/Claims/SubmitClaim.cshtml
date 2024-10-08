@@ -1,0 +1,91 @@
+﻿@model Claim
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit Claim</title>
+    <style>
+        /* Style the form with no background behind it */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.85); /* Keep subtle background for readability */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for form depth */
+        }
+
+        /* Ensure the container or body does not have any background color or extra padding */
+        body, html {
+            background: url('https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?cs=srgb&dl=pexels-felixmittermeier-956999.jpg&fm=jpg') no-repeat center center fixed; /* Use your background image */
+            background-size: cover;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Ensure padding doesn't add to the width/height */
+        }
+
+        /* Remove any padding from the container */
+        .container {
+            background: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Submit Claim</h2>
+        <form method="post" enctype="multipart/form-data" action="/Claims/SubmitClaim">
+            <div>
+                <label>Lecturer Name:</label>
+                <input type="text" name="LecturerName" required />
+            </div>
+            <div>
+                <label>Hours Worked:</label>
+                <input type="number" name="HoursWorked" step="0.1" required />
+            </div>
+            <div>
+                <label>Hourly Rate:</label>
+                <input type="number" name="HourlyRate" step="0.01" required />
+            </div>
+            <div>
+                <label>Additional Notes:</label>
+                <textarea name="Notes"></textarea>
+            </div>
+            <div>
+                <label>Upload Supporting Document:</label>
+                <input type="file" name="document" required />
+            </div>
+            <button type="submit">Submit Claim</button>
+        </form>
+    </div>
+</body>
+</html>
