@@ -1,99 +1,91 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class ClaimsController : Controller
 {
-    // Static list to store claims in memory
-    private static List<Claim> claims = new List<Claim>();
+    private readonly ClaimsDbContext _context;
 
-    // GET: Lecturer form for submitting claims
+    public ClaimsController(ClaimsDbContext context)
+    {
+        _context = context;
+    }
+
     [HttpGet]
     public IActionResult SubmitClaim()
     {
         return View();
     }
 
-    // POST: Submit claim (with file upload)
     [HttpPost]
-    public IActionResult SubmitClaim(Claim claim, IFormFile document)
+    public async Task<IActionResult> SubmitClaim(Claim claim, IFormFile document)
     {
         if (document != null && document.Length > 0)
         {
-            // Define the uploads path inside wwwroot
             var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
 
-            // Ensure the directory exists
             if (!Directory.Exists(uploadsPath))
             {
                 Directory.CreateDirectory(uploadsPath);
             }
 
-            // Combine file name with the uploads path
             var filePath = Path.Combine(uploadsPath, document.FileName);
 
-            // Save the file
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 document.CopyTo(stream);
             }
 
-            // Save the relative file path (starting from wwwroot)
             claim.DocumentPath = Path.Combine("/uploads", document.FileName);
         }
 
-        // Assign a new ID to the claim
-        claim.Id = claims.Count + 1;
+        _context.Claims.Add(claim);
+        await _context.SaveChangesAsync();
 
-        // Add the claim to the in-memory list
-        claims.Add(claim);
-
-        // Redirect to a confirmation page
         return RedirectToAction("ClaimSubmitted");
     }
 
-
-    // A confirmation page after submission
     public IActionResult ClaimSubmitted()
     {
         return View();
     }
 
-    // GET: Display all pending claims for Coordinators/Managers
     [HttpGet]
-    public IActionResult ViewPendingClaims()
+    public async Task<IActionResult> ViewPendingClaims()
     {
-        return View(claims.Where(c => c.Status == "Pending").ToList());
+        var pendingClaims = await _context.Claims.Where(c => c.Status == "Pending").ToListAsync();
+        return View(pendingClaims);
     }
 
-    // POST: Approve a claim
     [HttpPost]
-    public IActionResult ApproveClaim(int id)
+    public async Task<IActionResult> ApproveClaim(int id)
     {
-        var claim = claims.FirstOrDefault(c => c.Id == id);
+        var claim = await _context.Claims.FindAsync(id);
         if (claim != null)
         {
             claim.Status = "Approved";
+            await _context.SaveChangesAsync();
         }
         return RedirectToAction("ViewPendingClaims");
     }
 
-    // POST: Reject a claim
     [HttpPost]
-    public IActionResult RejectClaim(int id)
+    public async Task<IActionResult> RejectClaim(int id)
     {
-        var claim = claims.FirstOrDefault(c => c.Id == id);
+        var claim = await _context.Claims.FindAsync(id);
         if (claim != null)
         {
             claim.Status = "Rejected";
+            await _context.SaveChangesAsync();
         }
         return RedirectToAction("ViewPendingClaims");
     }
 
-    // GET: View all claims to track their progress
     [HttpGet]
-    public IActionResult TrackClaims()
+    public async Task<IActionResult> TrackClaims()
     {
-        return View(claims);
+        var allClaims = await _context.Claims.ToListAsync();
+        return View(allClaims);
     }
 }
