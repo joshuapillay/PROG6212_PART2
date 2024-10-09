@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -13,7 +15,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?cs=srgb&dl=pexels-felixmittermeier-956999.jpg&fm=jpg') no-repeat center center fixed; /* Replace with the URL of your image */
+            background: url('https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?cs=srgb&dl=pexels-felixmittermeier-956999.jpg&fm=jpg') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
             padding: 0;
@@ -21,25 +23,23 @@
             min-height: 100vh;
         }
 
-        /* Ensure the parent container has full width */
         .container-fluid, .container {
             width: 100%;
             padding: 0;
             margin: 0;
         }
 
-        /* Center main content and expand */
         .content-container {
-            background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent white background */
-            padding: 40px; /* Increase padding for better spacing */
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 85%; /* Expand the width of the container */
-            margin: 30px auto; /* Center the container horizontally */
+            max-width: 85%;
+            margin: 30px auto;
         }
 
         .footer {
-            display: none; /* Hide the footer */
+            display: none;
         }
     </style>
 </head>
@@ -67,6 +67,33 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Claims" asp-action="TrackClaims">Track Claims</a>
                         </li>
+                    </ul>
+                    @inject SignInManager<ApplicationUser> SignInManager
+                    @inject UserManager<ApplicationUser> UserManager
+                    <!-- User Authentication Links -->
+                    <ul class="navbar-nav">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                                    Hello @UserManager.GetUserName(User)!
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post">
+                                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

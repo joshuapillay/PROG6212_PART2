@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,14 +51,14 @@ public class ClaimsController : Controller
     {
         return View();
     }
-
+    [Authorize(Roles = "Coordinator,Manager")]
     [HttpGet]
     public async Task<IActionResult> ViewPendingClaims()
     {
         var pendingClaims = await _context.Claims.Where(c => c.Status == "Pending").ToListAsync();
         return View(pendingClaims);
     }
-
+    [Authorize(Roles = "Coordinator,Manager")]
     [HttpPost]
     public async Task<IActionResult> ApproveClaim(int id)
     {
@@ -69,7 +70,7 @@ public class ClaimsController : Controller
         }
         return RedirectToAction("ViewPendingClaims");
     }
-
+    [Authorize(Roles = "Coordinator,Manager")]
     [HttpPost]
     public async Task<IActionResult> RejectClaim(int id)
     {
