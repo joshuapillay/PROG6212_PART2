@@ -7,85 +7,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Submit Claim</title>
     <style>
-        /* Style the form with no background behind it */
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.85); /* Keep subtle background for readability */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for form depth */
-        }
-
-        /* Ensure the container or body does not have any background color or extra padding */
         body, html {
-            background: url('https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?cs=srgb&dl=pexels-felixmittermeier-956999.jpg&fm=jpg') no-repeat center center fixed; /* Use your background image */
+            background: url('https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?cs=srgb&dl=pexels-felixmittermeier-956999.jpg&fm=jpg') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
             margin: 0;
             padding: 0;
-            box-sizing: border-box; /* Ensure padding doesn't add to the width/height */
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Remove any padding from the container */
-        .container {
-            background: none;
-            padding: 0;
-            margin: 0;
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid #ddd;
+        }
+
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
         label {
             font-weight: bold;
+            color: #333;
         }
 
         input, textarea, select {
             width: 100%;
-            padding: 8px;
-            margin: 5px 0 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+            input:focus, textarea:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+                outline: none;
+            }
+
+        .text-danger {
+            color: #d9534f;
+            font-size: 0.9em;
+            margin-top: -8px;
+            margin-bottom: 10px;
         }
 
         button {
-            background-color: #007bff;
+            background-color: #28a745;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            display: block;
+            width: 100%;
         }
 
             button:hover {
-                background-color: #0056b3;
+                background-color: #218838;
             }
+
+            button:active {
+                transform: scale(0.98);
+            }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+            .form-footer a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .form-footer a:hover {
+                    text-decoration: underline;
+                }
     </style>
 </head>
 <body>
     <div class="form-container">
-        <h2>Submit Claim</h2>
+        <h2>Submit Your Claim</h2>
         <form method="post" enctype="multipart/form-data" action="/Claims/SubmitClaim">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div>
                 <label>Lecturer Name:</label>
-                <input type="text" name="LecturerName" required />
+                <input type="text" name="LecturerName" value="@Model?.LecturerName" placeholder="Enter your name" required />
             </div>
             <div>
                 <label>Hours Worked:</label>
-                <input type="number" name="HoursWorked" step="0.1" required />
+                <input type="number" name="HoursWorked" value="@Model?.HoursWorked" step="0.1" placeholder="E.g., 15.5" required />
             </div>
             <div>
                 <label>Hourly Rate:</label>
-                <input type="number" name="HourlyRate" step="0.01" required />
+                <input type="number" name="HourlyRate" value="@Model?.HourlyRate" step="0.01" placeholder="E.g., 75.00" required />
             </div>
             <div>
                 <label>Additional Notes:</label>
-                <textarea name="Notes"></textarea>
+                <textarea name="Notes" placeholder="Any additional notes...">@Model?.Notes</textarea>
             </div>
             <div>
                 <label>Upload Supporting Document:</label>
                 <input type="file" name="document" required />
+                <div class="text-danger">
+                    @if (ViewData.ModelState.ContainsKey("document") && ViewData.ModelState["document"].Errors.Count > 0)
+                    {
+                        <span>@ViewData.ModelState["document"].Errors[0].ErrorMessage</span>
+                    }
+                </div>
             </div>
             <button type="submit">Submit Claim</button>
         </form>
+        <div class="form-footer">
+            <p>Having trouble? <a href="/Contact">Contact Support</a></p>
+        </div>
     </div>
 </body>
 </html>

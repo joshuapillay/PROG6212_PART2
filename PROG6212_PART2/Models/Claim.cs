@@ -20,8 +20,8 @@ public class Claim
     public string Notes { get; set; }
 
     [Required]
-    public string Status { get; set; } = "Pending"; // Default status is pending
+    public string Status { get; set; } = "Pending"; 
 
     [Required]
-    public string DocumentPath { get; set; } // Path to the uploaded file
+    public string? DocumentPath { get; set; } 
 }

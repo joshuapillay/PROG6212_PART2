@@ -13,32 +13,34 @@ namespace PROG6212_PART2
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Configure the DbContext to use SQL Server and the connection string from configuration
             builder.Services.AddDbContext<ClaimsDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ClaimsDBContext")));
 
+            // Add Identity services for user authentication and authorization, including roles
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedAccount = false; // Set to true if you want email confirmation
+                options.User.RequireUniqueEmail = true; 
+                options.SignIn.RequireConfirmedAccount = false; // Disable email confirmation for login
             })
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ClaimsDbContext>();
+            .AddRoles<IdentityRole>() 
+            .AddEntityFrameworkStores<ClaimsDbContext>(); // Use the ClaimsDbContext for identity storage
 
-            // Add in-memory cache services for temporary data storage
+            // Add distributed memory cache and session services
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession();
 
             var app = builder.Build();
 
-            // Seed data after the application has started
+            // Seed the database with initial data (roles and users)
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 try
                 {
-                    await SeedData.Initialize(services); // Call the seed method
+                    await SeedData.Initialize(services); // Seed the roles and users
                 }
                 catch (Exception ex)
                 {
@@ -46,21 +48,27 @@ namespace PROG6212_PART2
                 }
             }
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
+            // Enable HTTPS, static files, routing, and session
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseAuthentication(); // Add authentication middleware
+
+            // Enable authentication and authorization
+            app.UseAuthentication();
             app.UseAuthorization();
-            app.UseSession();
+
+            app.UseSession(); // Enable session management
+
+            // Map Razor Pages for Identity
             app.MapRazorPages();
 
+            // Define the default routing pattern
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

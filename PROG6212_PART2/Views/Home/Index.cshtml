@@ -2,7 +2,152 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PROG6212_PART2</title>
+    <style>
+        body, html {
+            background: url('https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?cs=srgb&dl=pexels-felixmittermeier-956999.jpg&fm=jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .jumbotron {
+            background-color: rgba(0, 123, 255, 0.9);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            max-width: 90%;
+        }
+
+            .jumbotron h1 {
+                font-size: 3em;
+                font-weight: bold;
+            }
+
+            .jumbotron p {
+                font-size: 1.2em;
+            }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .feature {
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+            .feature:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+            }
+
+            .feature img {
+                max-width: 100px;
+                margin-bottom: 15px;
+                border-radius: 50%;
+            }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border-radius: 20px;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-custom:hover {
+                background-color: #0056b3;
+            }
+
+        .form-container {
+            background-color: rgba(245, 245, 245, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="jumbotron mx-auto">
+        <h1 class="display-4">Welcome to the Contract Monthly Claim System</h1>
+        <p class="lead">Manage your claims seamlessly and keep track of your monthly submissions. Simplifying the process for lecturers, coordinators, and managers.</p>
+        <a href="/Claims/SubmitClaim" class="btn btn-lg btn-light">Submit Your Claim</a>
+    </div>
+
+    <div class="container my-5">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-4 feature">
+                <img src="https://images.pexels.com/photos/3184300/pexels-photo-3184300.jpeg?cs=srgb&dl=pexels-fauxels-3184300.jpg&fm=jpg" alt="Submit Claims">
+                <h2>Easy Claim Submission</h2>
+                <p>Submit your hours with just a few clicks. Upload supporting documents and let us handle the rest.</p>
+                <a href="/Claims/SubmitClaim" class="btn btn-custom">Submit Now »</a>
+            </div>
+            <div class="col-lg-4 feature">
+                <img src="https://images.pexels.com/photos/3184397/pexels-photo-3184397.jpeg?cs=srgb&dl=pexels-fauxels-3184397.jpg&fm=jpg" alt="Track Claims">
+                <h2>Track Your Claims</h2>
+                <p>View the status of your submitted claims and monitor the approval process in real-time.</p>
+                <a href="/Claims/TrackClaims" class="btn btn-custom">Track Claims »</a>
+            </div>
+            <div class="col-lg-4 feature">
+                <img src="https://images.pexels.com/photos/3184643/pexels-photo-3184643.jpeg?cs=srgb&dl=pexels-fauxels-3184643.jpg&fm=jpg" alt="Approval Process">
+                <h2>Approval Made Easy</h2>
+                <p>Coordinators and managers can review, approve, or reject claims efficiently with just one click.</p>
+                <a href="/Claims/ViewPendingClaims" class="btn btn-custom">Approve Claims »</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Why Use Our System?</h2>
+            <div class="row">
+                <div class="col-lg-3 text-center">
+                    <i class="fas fa-leaf fa-3x text-primary mb-3"></i>
+                    <h4 style="color: green;">Time-Saving</h4>
+                    <p>Streamline your claim submissions and save valuable time.</p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <i class="fas fa-eye fa-3x text-primary mb-3"></i>
+                    <h4 style="color: blue;">Transparency</h4>
+                    <p>Track the status of your claims with complete transparency.</p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <i class="fas fa-smile fa-3x text-primary mb-3"></i>
+                    <h4 style="color: darkorchid;">User-Friendly</h4>
+                    <p>Designed with simplicity in mind, making it easy for everyone.</p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <i class="fas fa-lock fa-3x text-primary mb-3"></i>
+                    <h4 style="color: orange;">Secure</h4>
+                    <p>Your data is protected with the highest security standards.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container my-5">
+        <div class="form-container text-center mx-auto">
+            <h2>Get Started Today!</h2>
+            <p>New here? Create an account and start managing your claims effortlessly.</p>
+            <a href="/Identity/Account/Register" class="btn btn-custom">Register Now</a>
+        </div>
+    </div>
+</body>
+</html>

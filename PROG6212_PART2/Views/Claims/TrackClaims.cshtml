@@ -17,7 +17,7 @@
         }
 
         table {
-            width: 95%; /* Expand table width */
+            width: 95%; 
             margin: 20px auto;
             border-collapse: collapse;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -29,9 +29,10 @@
         }
 
         th, td {
-            padding: 12px 15px;
+            padding: 15px;
             text-align: left;
             border: 1px solid #ddd;
+            font-size: 1rem;
         }
 
         th {
@@ -39,6 +40,7 @@
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            font-size: 1.2rem; 
         }
 
         tbody tr:nth-child(even) {
@@ -51,10 +53,10 @@
         }
 
         td {
-            color: #555;
+            color: #222; 
         }
 
-            /* Style for status column */
+            
             td:last-child {
                 font-weight: bold;
                 text-transform: uppercase;
@@ -71,6 +73,28 @@
         .status-pending {
             color: orange;
         }
+
+        .content-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 85%;
+            margin: 30px auto;
+        }
+
+        .btn-danger {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .btn-danger:hover {
+                background-color: darkred;
+            }
     </style>
 </head>
 <body>
@@ -83,6 +107,7 @@
                 <th>Hourly Rate</th>
                 <th>Notes</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -94,6 +119,15 @@
                     <td>@claim.HourlyRate</td>
                     <td>@claim.Notes</td>
                     <td class="@("status-" + @claim.Status.ToLower())">@claim.Status</td>
+                    <td>
+                        @if (User.IsInRole("Manager") || User.IsInRole("Coordinator"))
+                        {
+                            <form asp-action="DeleteClaim" method="post">
+                                <input type="hidden" name="id" value="@claim.Id" />
+                                <button type="submit" class="btn-danger">Delete</button>
+                            </form>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>

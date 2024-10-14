@@ -4,58 +4,52 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Claim Submitted</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?cs=srgb&dl=pexels-felixmittermeier-956999.jpg&fm=jpg') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
             padding: 0;
+            min-height: 100vh;
         }
 
         .confirmation-container {
-            text-align: center;
-            margin-top: 100px;
-            padding: 20px;
-            background-color: #fff;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
             border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;
         }
 
         h2 {
-            color: #28a745;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
+            color: #007bff;
+            margin-bottom: 15px;
         }
 
         p {
-            font-size: 1rem;
-            margin-bottom: 30px;
-            color: #555;
+            margin-bottom: 20px;
+            color: #333;
         }
 
         a {
             display: inline-block;
-            text-decoration: none;
             background-color: #007bff;
             color: #fff;
             padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
             margin: 5px;
+            border-radius: 5px;
+            text-decoration: none;
             transition: background-color 0.3s ease;
         }
 
             a:hover {
                 background-color: #0056b3;
             }
-
-            a:first-of-type {
-                margin-right: 10px;
-            }
-
     </style>
 </head>
 <body>
@@ -65,6 +59,7 @@
         <a href="/Claims/SubmitClaim">Submit Another Claim</a>
         <a href="/Claims/TrackClaims">Track Your Claims</a>
     </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

@@ -7,10 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PROG6212_PART2</title>
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PROG6212_PART2.styles.css" asp-append-version="true" />
 
     <style>
         body {
@@ -23,20 +21,21 @@
             min-height: 100vh;
         }
 
-        .container-fluid, .container {
-            width: 100%;
-            padding: 0;
-            margin: 0;
+        .navbar {
+            background-color: #0d6efd;
         }
 
-        .content-container {
-            background-color: rgba(255, 255, 255, 0.85);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 85%;
-            margin: 30px auto;
-        }
+            .navbar .navbar-brand,
+            .navbar .nav-link {
+                color: white !important;
+            }
+
+                .navbar .navbar-brand:hover,
+                .navbar .nav-link:hover {
+                    color: #f8f9fa !important;
+                }
+
+        
 
         .footer {
             display: none;
@@ -44,54 +43,51 @@
     </style>
 </head>
 <body>
-    <!-- Navbar at the top -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PROG6212_PART2</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CMCS</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Claims" asp-action="SubmitClaim">Submit Claim</a>
+                            <a class="nav-link" asp-area="" asp-controller="Claims" asp-action="SubmitClaim">Submit Claim</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Claims" asp-action="ViewPendingClaims">Approve Claims</a>
+                            <a class="nav-link" asp-area="" asp-controller="Claims" asp-action="ViewPendingClaims">Approve Claims</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Claims" asp-action="TrackClaims">Track Claims</a>
+                            <a class="nav-link" asp-area="" asp-controller="Claims" asp-action="TrackClaims">Track Claims</a>
                         </li>
                     </ul>
                     @inject SignInManager<ApplicationUser> SignInManager
                     @inject UserManager<ApplicationUser> UserManager
-                    <!-- User Authentication Links -->
                     <ul class="navbar-nav">
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                                <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                                     Hello @UserManager.GetUserName(User)!
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post">
-                                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
+                                    <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0">Logout</button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
                             </li>
                         }
                     </ul>
@@ -100,7 +96,6 @@
         </nav>
     </header>
 
-    <!-- Main content centered and expanded -->
     <div class="container">
         <div class="content-container">
             <main role="main" class="pb-3">
@@ -109,10 +104,8 @@
         </div>
     </div>
 
-    <!-- Footer hidden -->
     <footer class="border-top footer text-muted"></footer>
 
-    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
