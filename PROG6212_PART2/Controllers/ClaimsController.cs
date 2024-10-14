@@ -179,4 +179,6 @@ public class ClaimsController : Controller
             return View("Error");
         }
     }
+    //Mrzygłód, K., 2022. Azure for Developers. 2nd ed. August: [Meeta Rajani]
+
 }

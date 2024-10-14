@@ -119,4 +119,6 @@ public class ClaimsControllerTests
         var model = Assert.IsAssignableFrom<List<Claim>>(viewResult.ViewData.Model);
         Assert.Equal(2, model.Count);
     }
+    //Mrzygłód, K., 2022. Azure for Developers. 2nd ed. August: [Meeta Rajani]
+
 }
