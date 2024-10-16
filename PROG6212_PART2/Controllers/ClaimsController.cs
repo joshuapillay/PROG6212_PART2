@@ -143,7 +143,7 @@ public class ClaimsController : Controller
         }
         return RedirectToAction("ViewPendingClaims");
     }
-
+    // roles defined below
     // GET method for tracking claims (visible to all roles)
     [Authorize(Roles = "Coordinator,Manager,Lecturer")]
 
