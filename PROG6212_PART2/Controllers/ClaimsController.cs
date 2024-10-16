@@ -162,7 +162,7 @@ public class ClaimsController : Controller
             return View("Error");
         }
     }
-
+    // roles defined below
     // POST method for deleting a claim (visible to coordinators and managers)
     [Authorize(Roles = "Coordinator,Manager")]
     [HttpPost]
