@@ -129,7 +129,7 @@ public class ClaimsController : Controller
             if (claim != null)
             {
                 claim.Status = "Rejected"; // Update status to rejected
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();//await action
             }
             else
             {
