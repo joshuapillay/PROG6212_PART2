@@ -145,6 +145,8 @@ public class ClaimsController : Controller
     }
 
     // GET method for tracking claims (visible to all roles)
+    [Authorize(Roles = "Coordinator,Manager,Lecturer")]
+
     [HttpGet]
     public async Task<IActionResult> TrackClaims()
     {
