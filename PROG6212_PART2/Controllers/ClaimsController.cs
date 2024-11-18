@@ -31,17 +31,15 @@ public class ClaimsController : Controller
     [HttpPost]
     public async Task<IActionResult> SubmitClaim(Claim claim, IFormFile document)
     {
-        // Validate input fields
         if (claim.HoursWorked <= 0 || claim.HourlyRate <= 0)
         {
             ModelState.AddModelError(string.Empty, "Hours Worked and Hourly Rate must be positive values.");
             return View(claim);
         }
 
-        // Auto-calculate total payment (already calculated in the model)
+        // Auto-calculate payment and set to pending
         claim.Status = "Pending";
 
-        // Handle file upload
         if (document != null && document.Length > 0)
         {
             var fileExtension = Path.GetExtension(document.FileName).ToLower();
@@ -71,7 +69,22 @@ public class ClaimsController : Controller
             return View(claim);
         }
 
-        // Save claim to the database
+        // Automated claim verification
+        if (claim.HoursWorked > 252) // Example: limit of 40 hours
+        {
+            claim.Status = "Rejected";
+            claim.Notes = "Rejected: Hours worked exceed the maximum allowed limit of 252.";
+        }
+        else if (claim.HourlyRate > 200) // Example: hourly rate limit
+        {
+            claim.Status = "Rejected";
+            claim.Notes = "Rejected: Hourly rate exceeds the maximum allowed limit of 200.";
+        }
+        else
+        {
+            claim.Status = "Pending";
+        }
+
         _context.Claims.Add(claim);
         await _context.SaveChangesAsync();
 
@@ -93,13 +106,15 @@ public class ClaimsController : Controller
     {
         try
         {
-            var pendingClaims = await _context.Claims.Where(c => c.Status == "Pending").ToListAsync(); // Fetch pending claims
+            var pendingClaims = await _context.Claims
+                .Where(c => c.Status == "Pending")
+                .ToListAsync();
             return View(pendingClaims);
         }
         catch (Exception ex)
         {
             ModelState.AddModelError(string.Empty, "An error occurred while fetching the claims. Please try again later.");
-            Console.WriteLine(ex.Message); // Log the error
+            Console.WriteLine(ex.Message);
             return View("Error");
         }
     }

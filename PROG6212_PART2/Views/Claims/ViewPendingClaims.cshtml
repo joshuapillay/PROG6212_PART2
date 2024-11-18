@@ -54,9 +54,9 @@
             transition: background-color 0.3s ease;
         }
 
-        tbody tr:hover {
-            background-color: #e9ecef;
-        }
+            tbody tr:hover {
+                background-color: #e9ecef;
+            }
 
         a {
             color: #007bff;
@@ -64,9 +64,9 @@
             font-weight: bold;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
+            a:hover {
+                text-decoration: underline;
+            }
 
         .actions {
             display: flex;
@@ -88,24 +88,42 @@
             color: white;
         }
 
-        .btn-success:hover {
-            background-color: #218838;
-        }
+            .btn-success:hover {
+                background-color: #218838;
+            }
 
         .btn-danger {
             background-color: #dc3545;
             color: white;
         }
 
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
+            .btn-danger:hover {
+                background-color: #c82333;
+            }
 
         .no-claims {
             text-align: center;
             font-size: 1.2rem;
             margin-top: 50px;
             color: #6c757d;
+        }
+
+        .status-pending {
+            color: orange;
+        }
+
+        .status-approved {
+            color: green;
+        }
+
+        .status-rejected {
+            color: red;
+        }
+
+        .rejection-reason {
+            font-size: 0.9rem;
+            color: #c82333;
+            margin-top: 5px;
         }
 
         @@media (max-width: 768px) {
@@ -126,15 +144,6 @@
                 font-size: 12px;
             }
         }
-
-        .content-container {
-            background-color: rgba(255, 255, 255, 0.85);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 85%;
-            margin: 30px auto;
-        }
     </style>
 </head>
 <body>
@@ -150,6 +159,7 @@
                     <th>Hourly Rate</th>
                     <th>Notes</th>
                     <th>Document</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -165,17 +175,41 @@
                             <a href="@claim.DocumentPath" target="_blank">View Document</a>
                         </td>
                         <td>
-                            <div class="actions">
-                                <form method="post" action="/Claims/ApproveClaim" style="display:inline-block;">
-                                    <input type="hidden" name="id" value="@claim.Id" />
-                                    <button type="submit" class="btn btn-success">Approve</button>
-                                </form>
+                            @if (claim.Status == "Pending")
+                            {
+                                <span class="status-pending">@claim.Status</span>
+                            }
+                            else if (claim.Status == "Approved")
+                            {
+                                <span class="status-approved">@claim.Status</span>
+                            }
+                            else if (claim.Status == "Rejected")
+                            {
+                                <span class="status-rejected">@claim.Status</span>
+                                <div class="rejection-reason">
+                                    <strong>Reason:</strong> @claim.RejectionReason
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            @if (claim.Status == "Pending")
+                            {
+                                <div class="actions">
+                                    <form method="post" action="/Claims/ApproveClaim" style="display:inline-block;">
+                                        <input type="hidden" name="id" value="@claim.Id" />
+                                        <button type="submit" class="btn btn-success">Approve</button>
+                                    </form>
 
-                                <form method="post" action="/Claims/RejectClaim" style="display:inline-block;">
-                                    <input type="hidden" name="id" value="@claim.Id" />
-                                    <button type="submit" class="btn btn-danger">Reject</button>
-                                </form>
-                            </div>
+                                    <form method="post" action="/Claims/RejectClaim" style="display:inline-block;">
+                                        <input type="hidden" name="id" value="@claim.Id" />
+                                        <button type="submit" class="btn btn-danger">Reject</button>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <span>--</span>
+                            }
                         </td>
                     </tr>
                 }
@@ -188,5 +222,3 @@
     }
 </body>
 </html>
-@*  Mrzygłód, K., 2022. Azure for Developers. 2nd ed. August: [Meeta Rajani]
- *@
