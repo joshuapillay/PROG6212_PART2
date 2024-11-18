@@ -31,7 +31,17 @@ public class ClaimsController : Controller
     [HttpPost]
     public async Task<IActionResult> SubmitClaim(Claim claim, IFormFile document)
     {
-        // Validate and process file upload if present
+        // Validate input fields
+        if (claim.HoursWorked <= 0 || claim.HourlyRate <= 0)
+        {
+            ModelState.AddModelError(string.Empty, "Hours Worked and Hourly Rate must be positive values.");
+            return View(claim);
+        }
+
+        // Auto-calculate total payment (already calculated in the model)
+        claim.Status = "Pending";
+
+        // Handle file upload
         if (document != null && document.Length > 0)
         {
             var fileExtension = Path.GetExtension(document.FileName).ToLower();
@@ -44,16 +54,16 @@ public class ClaimsController : Controller
             var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
             if (!Directory.Exists(uploadsPath))
             {
-                Directory.CreateDirectory(uploadsPath); // Create directory if not exists
+                Directory.CreateDirectory(uploadsPath);
             }
 
             var filePath = Path.Combine(uploadsPath, document.FileName);
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                await document.CopyToAsync(stream); // Save file to the server
+                await document.CopyToAsync(stream);
             }
 
-            claim.DocumentPath = $"/uploads/{document.FileName}"; // Store file path in the claim object
+            claim.DocumentPath = $"/uploads/{document.FileName}";
         }
         else
         {
@@ -61,11 +71,13 @@ public class ClaimsController : Controller
             return View(claim);
         }
 
-        _context.Claims.Add(claim); // Add claim to the database
-        await _context.SaveChangesAsync(); // Save changes to the database
+        // Save claim to the database
+        _context.Claims.Add(claim);
+        await _context.SaveChangesAsync();
 
-        return RedirectToAction("ClaimSubmitted"); // Redirect to the confirmation page
+        return RedirectToAction("ClaimSubmitted");
     }
+
 
     // GET method for the Claim Submitted confirmation page
     [Authorize(Roles = "Lecturer")]

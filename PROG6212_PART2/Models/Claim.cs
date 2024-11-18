@@ -17,11 +17,15 @@ public class Claim
     [Range(0, double.MaxValue)]
     public double HourlyRate { get; set; }
 
+    [NotMapped] // Exclude from the database
+    public double TotalPayment => HoursWorked * HourlyRate; // Auto-calculated property
+
     public string Notes { get; set; }
 
     [Required]
-    public string Status { get; set; } = "Pending"; 
+    public string Status { get; set; } = "Pending";
 
     [Required]
-    public string? DocumentPath { get; set; } 
+    public string? DocumentPath { get; set; }
 }
+

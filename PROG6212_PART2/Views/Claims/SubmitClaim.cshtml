@@ -112,11 +112,15 @@
             </div>
             <div>
                 <label>Hours Worked:</label>
-                <input type="number" name="HoursWorked" value="@Model?.HoursWorked" step="0.1" placeholder="E.g., 15.5" required />
+                <input type="number" id="HoursWorked" name="HoursWorked" value="@Model?.HoursWorked" step="0.1" placeholder="E.g., 15.5" required />
             </div>
             <div>
                 <label>Hourly Rate:</label>
-                <input type="number" name="HourlyRate" value="@Model?.HourlyRate" step="0.01" placeholder="E.g., 75.00" required />
+                <input type="number" id="HourlyRate" name="HourlyRate" value="@Model?.HourlyRate" step="0.01" placeholder="E.g., 75.00" required />
+            </div>
+            <div>
+                <label>Total Payment:</label>
+                <input type="text" id="TotalPayment" name="TotalPayment" readonly placeholder="Auto-calculated" />
             </div>
             <div>
                 <label>Additional Notes:</label>
@@ -138,8 +142,19 @@
             <p>Having trouble? <a href="/Contact">Contact Support</a></p>
         </div>
     </div>
-</body>
 
+    <script>
+        // Real-time calculation of Total Payment
+        document.getElementById("HoursWorked").addEventListener("input", calculateTotal);
+        document.getElementById("HourlyRate").addEventListener("input", calculateTotal);
+
+        function calculateTotal() {
+            const hoursWorked = parseFloat(document.getElementById("HoursWorked").value) || 0;
+            const hourlyRate = parseFloat(document.getElementById("HourlyRate").value) || 0;
+            const totalPayment = hoursWorked * hourlyRate;
+            document.getElementById("TotalPayment").value = totalPayment.toFixed(2);
+        }
+    </script>
+</body>
 </html>
-@*  Mrzygłód, K., 2022. Azure for Developers. 2nd ed. August: [Meeta Rajani]
- *@
+@* Mrzygłód, K., 2022. Azure for Developers. 2nd ed. August: [Meeta Rajani] *@
