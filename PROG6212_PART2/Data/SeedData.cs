@@ -13,7 +13,7 @@ public class SeedData
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
         // Define the roles that need to be created
-        string[] roleNames = { "Lecturer", "Coordinator", "Manager" };
+        string[] roleNames = { "Lecturer", "Coordinator", "Manager", "HR" }; // Added "HR"
         IdentityResult roleResult;
 
         // Loop through each role and create if it doesn't exist
@@ -85,7 +85,35 @@ public class SeedData
                 await userManager.AddToRoleAsync(coordinatorUser, "Coordinator");
             }
         }
-    }
-    //Mrzygłód, K., 2022. Azure for Developers. 2nd ed. August: [Meeta Rajani]
 
+        var hrEmail = "hr@example.com";
+        var hrUser = new ApplicationUser
+        {
+            UserName = hrEmail,
+            Email = hrEmail,
+        };
+
+        var existingHR = await userManager.FindByEmailAsync(hrEmail);
+
+        if (existingHR == null)
+        {
+            var createHR = await userManager.CreateAsync(hrUser, "Hr@123");
+            if (createHR.Succeeded)
+            {
+                await userManager.AddToRoleAsync(hrUser, "HR");
+                Console.WriteLine("HR user created successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to create HR user.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("HR user already exists.");
+        }
+
+
+    }
+    // Mrzygłód, K., 2022. Azure for Developers. 2nd ed. August: [Meeta Rajani]
 }

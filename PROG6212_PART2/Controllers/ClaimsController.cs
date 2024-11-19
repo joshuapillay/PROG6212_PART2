@@ -172,7 +172,7 @@ public class ClaimsController : Controller
     }
     // roles defined below
     // GET method for tracking claims (visible to all roles)
-    [Authorize(Roles = "Coordinator,Manager,Lecturer")]
+    [Authorize(Roles = "Coordinator,Manager,Lecturer,HR")]
 
     [HttpGet]
     public async Task<IActionResult> TrackClaims()
@@ -208,6 +208,65 @@ public class ClaimsController : Controller
             return View("Error");
         }
     }
+
+    [Authorize(Roles = "HR")]
+    [HttpGet]
+    public async Task<IActionResult> HRView()
+    {
+        var approvedClaims = await _context.Claims
+            .Where(c => c.Status == "Approved")
+            .ToListAsync();
+
+        return View(approvedClaims);
+    }
+
+    [Authorize(Roles = "HR")]
+    [HttpGet]
+    public async Task<IActionResult> GenerateReport()
+    {
+        var approvedClaims = await _context.Claims
+            .Where(c => c.Status == "Approved")
+            .ToListAsync();
+
+        // Generate a PDF report (for simplicity, using plain text here)
+        var reportContent = "Approved Claims Report\n\n";
+        reportContent += "LecturerName, HoursWorked, HourlyRate, TotalPayment\n";
+
+        foreach (var claim in approvedClaims)
+        {
+            var totalPayment = claim.HoursWorked * claim.HourlyRate;
+            reportContent += $"{claim.LecturerName}, {claim.HoursWorked}, {claim.HourlyRate}, {totalPayment}\n";
+        }
+
+        var fileName = $"ApprovedClaimsReport_{DateTime.Now:yyyyMMdd}.txt";
+        var bytes = System.Text.Encoding.UTF8.GetBytes(reportContent);
+
+        return File(bytes, "text/plain", fileName);
+    }
+
+
+    [Authorize(Roles = "HR")]
+    [HttpGet]
+    public async Task<IActionResult> ManageLecturers()
+    {
+        var lecturers = await _context.Lecturers.ToListAsync();
+        return View(lecturers);
+    }
+
+    [Authorize(Roles = "HR")]
+    [HttpPost]
+    public async Task<IActionResult> UpdateLecturer(Lecturer lecturer)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View("ManageLecturers");
+        }
+
+        _context.Lecturers.Update(lecturer);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("ManageLecturers");
+    }
+
     //Mrzygłód, K., 2022. Azure for Developers. 2nd ed. August: [Meeta Rajani]
 
 }

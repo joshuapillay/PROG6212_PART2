@@ -22,10 +22,11 @@ namespace PROG6212_PART2
             // Add Identity services for user authentication and authorization, including roles
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
-                options.User.RequireUniqueEmail = true; 
+                options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedAccount = false; // Disable email confirmation for login
+                options.SignIn.RequireConfirmedEmail = false; // Ensure email confirmation is not required
             })
-            .AddRoles<IdentityRole>() 
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ClaimsDbContext>(); // Use the ClaimsDbContext for identity storage
 
             // Add distributed memory cache and session services
@@ -77,5 +78,4 @@ namespace PROG6212_PART2
         }
     }
     //Mrzygłód, K., 2022. Azure for Developers. 2nd ed. August: [Meeta Rajani]
-
 }

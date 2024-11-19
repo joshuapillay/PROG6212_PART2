@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Claim>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HR View</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?cs=srgb&dl=pexels-felixmittermeier-956999.jpg&fm=jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #fff;
+            margin: 20px 0;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+        }
+
+        table {
+            width: 90%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        thead {
+            background-color: #007bff;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .download-report-btn {
+            display: block;
+            text-align: center;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+            .download-report-btn:hover {
+                background-color: #218838;
+            }
+    </style>
+</head>
+<body>
+    <h2>Approved Claims</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Lecturer Name</th>
+                <th>Hours Worked</th>
+                <th>Hourly Rate</th>
+                <th>Total Payment</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.LecturerName</td>
+                    <td>@claim.HoursWorked</td>
+                    <td>@claim.HourlyRate</td>
+                    <td>@(claim.HoursWorked * claim.HourlyRate)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a class="download-report-btn" href="/Claims/GenerateReport">Download Report</a>
+</body>
+</html>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 public class ClaimsDbContext : IdentityDbContext<ApplicationUser>
 {
     public DbSet<Claim> Claims { get; set; }
-
+    public DbSet<Lecturer> Lecturers { get; set; }
     public ClaimsDbContext(DbContextOptions<ClaimsDbContext> options)
         : base(options)
     {

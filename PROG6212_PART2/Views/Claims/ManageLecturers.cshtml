@@ -1,0 +1,174 @@
+﻿@model IEnumerable<Lecturer>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Lecturers</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e2f; /* Dark background */
+            color: #fff; /* Light text for contrast */
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-top: 20px;
+            color: #f8f9fa; /* Light heading color */
+        }
+
+        table {
+            width: 90%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background-color: #2a2a40; /* Table background for dark mode */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        thead {
+            background-color: #007bff; /* Header background color */
+            color: white; /* Header text color */
+            text-transform: uppercase;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 0.05rem;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #33334d; /* Alternating row color */
+        }
+
+        tbody tr:hover {
+            background-color: #44445f; /* Hover effect for rows */
+            cursor: pointer;
+        }
+
+        td {
+            color: #e1e1e1; /* Light text color for rows */
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: auto;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            background-color: #28a745; /* Button green background */
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            background-color: #218838; /* Darker green on hover */
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        @@media (max-width: 768px) {
+            table {
+                width: 100%; /* Make table full width for smaller screens */
+            }
+
+            th, td {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            form {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"] {
+                flex: 1 1 auto;
+                min-width: 100px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Manage Lecturers</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lecturer in Model)
+            {
+                <tr>
+                    <td>@lecturer.Name</td>
+                    <td>@lecturer.Email</td>
+                    <td>@lecturer.ContactNumber</td>
+                    <td>
+                        <form asp-action="UpdateLecturer" method="post">
+                            <input type="hidden" name="Id" value="@lecturer.Id" />
+                            <input type="text" name="Name" value="@lecturer.Name" required />
+                            <input type="email" name="Email" value="@lecturer.Email" required />
+                            <input type="tel" name="ContactNumber" value="@lecturer.ContactNumber" />
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
