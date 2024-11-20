@@ -308,7 +308,6 @@ public class ClaimsController : Controller
 
     public IActionResult GenerateExcelReport()
     {
-        // Set the license context (required for EPPlus)
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
         using (var package = new ExcelPackage())

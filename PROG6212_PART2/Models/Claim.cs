@@ -25,7 +25,7 @@ public class Claim
     [Required]
     public string Status { get; set; } = "Pending";
 
-    public string? RejectionReason { get; set; } // New property for storing rejection reasons
+    public string? RejectionReason { get; set; } 
 
     [Required]
     public string? DocumentPath { get; set; }
